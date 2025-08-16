@@ -1,3 +1,3 @@
 mod token;
 
-pub use token::{Token, TokenType, lookup_ident};
+pub use token::{Token, TokenType};

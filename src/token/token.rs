@@ -1,10 +1,4 @@
-pub struct Token {
-    token_type: String,
-    literal: String,
-    line: usize,
-    column: usize,
-}
-
+#[derive(Debug)]
 pub enum TokenType {
     Equals, 
     NotEquals,
@@ -35,7 +29,17 @@ pub enum TokenType {
     Else,
     Return,
     Let,
+    EOF
 }
+
+
+pub struct Token {
+    pub token_type:TokenType,
+    pub literal: String,
+    pub line: usize,
+    pub column: usize,
+}
+
 
 pub fn lookup_ident(ident: &str) -> TokenType {
    return match ident {
@@ -51,7 +55,7 @@ pub fn lookup_ident(ident: &str) -> TokenType {
 }
 
 impl Token {
-    pub fn new(token_type: String, literal: String, line: usize, column: usize) -> Self {
+    pub fn new(token_type: TokenType, literal: String, line: usize, column: usize) -> Self {
         Token {
             token_type,
             literal,

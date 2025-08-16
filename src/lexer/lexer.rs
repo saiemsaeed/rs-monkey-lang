@@ -1,3 +1,5 @@
+use crate::token::{Token, TokenType};
+
 pub struct Lexer {
     pub input: String,
     pub position: usize,
@@ -19,10 +21,30 @@ impl Lexer {
         };
 
         lexer.read_char();
-        return lexer
+        return lexer;
     }
 
-     pub fn read_char(&mut self) {
+    pub fn next_token(&mut self) -> Token {
+        let token;
+
+        match self.current_char {
+            Some('=') => {
+                token = self.new_token(TokenType::Equals, '='.to_string());
+            },
+            Some('+') => {
+                token = self.new_token(TokenType::Plus, '+'.to_string())
+
+            }
+            _ => {
+                token = self.new_token(TokenType::EOF, '\0'.to_string())
+            }
+        }
+
+        self.read_char();
+        return token
+    }
+
+    pub fn read_char(&mut self) {
         if self.read_position >= self.input.len() {
             self.current_char = None;
         } else {
@@ -30,7 +52,7 @@ impl Lexer {
         }
         self.position = self.read_position;
         self.read_position += 1;
-        
+
         if self.current_char == Some('\n') {
             self.line += 1;
             self.column = 1;
@@ -39,4 +61,12 @@ impl Lexer {
         }
     }
 
+    fn new_token(&self, token_type: TokenType, literal: String) -> Token {
+        return Token {
+            token_type,
+            literal,
+            line: 1,
+            column: 1,
+        };
+    }
 }
