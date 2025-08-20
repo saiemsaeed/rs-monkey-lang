@@ -1,34 +1,40 @@
-#[derive(Debug)]
+
+#[derive(Debug, PartialEq)]
 pub enum TokenType {
+    // Operators 
     Equals, 
     NotEquals,
     Plus,
     Minus,
-    Multiply,
-    Divide,
     Bang,
     Asterisk,
     Slash,
     LT,
     GT,
+
+    // Delimiters
     Comma,
     Semicolon,
     LeftParen,
     RightParen,
     LeftBrace,
     RightBrace,
-    Identifier,
-    Integer,
-    String,
-    True,
-    False,
-    Assign,
-    Illegal, 
+
+    // Literal and Identifiers
+    Identifier(String),
+    Integer(u64),
+    Bool(bool),
+
+    // Reserved Keywords
     Function,
+    Let,
+    Return,
+    Assign,
     If,
     Else,
-    Return,
-    Let,
+
+    // Special Tokens
+    Illegal, 
     EOF
 }
 
@@ -48,19 +54,9 @@ pub fn lookup_ident(ident: &str) -> TokenType {
         "if" => TokenType::If,
         "else" => TokenType::Else,
         "return" => TokenType::Return,
-        "true" => TokenType::True,
-        "false" => TokenType::False,
-        _ => TokenType::Identifier,
+        "true" => TokenType::Bool(true),
+        "false" => TokenType::Bool(false),
+        _ => TokenType::Identifier(ident.to_string()),
     }
 }
 
-impl Token {
-    pub fn new(token_type: TokenType, literal: String, line: usize, column: usize) -> Self {
-        Token {
-            token_type,
-            literal,
-            line,
-            column,
-        }
-    }
-}
